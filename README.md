@@ -1,3 +1,22 @@
+# Rice
+This is a learning project
+
+## Tech Stack
+
+1. Next.js 
+  - [Getting Started](https://nextjs.org/docs/app/getting-started/installation)
+2. React with Shadcn UI and Tailwind CSS
+  - [Shadcn Installation](https://ui.shadcn.com/docs/installation/next)
+  - [Tailwind CSS min course](https://tailwindcss.com/build-uis-that-dont-suck)
+3. Prisma with Neon 
+  - [How to use Prisma ORM with Next.js](https://www.prisma.io/docs/guides/nextjs?utm_source=youtube&utm_medium=video&ref=codewithantonio&utm_campaign=course_vibe)
+  - [Neon Registration](https://neon.com/docs/introduction)
+  - Alternatively use [Supabase](https://supabase.com/)
+
+other dependencies include:
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
