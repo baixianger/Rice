@@ -12,6 +12,8 @@ This is a learning project
   - [How to use Prisma ORM with Next.js](https://www.prisma.io/docs/guides/nextjs?utm_source=youtube&utm_medium=video&ref=codewithantonio&utm_campaign=course_vibe)
   - [Neon Registration](https://neon.com/docs/introduction)
   - Alternatively use [Supabase](https://supabase.com/)
+4. tRPC
+  - [tRPC integration with Next.js](https://trpc.io/docs/client/nextjs)
 
 other dependencies include:
 
