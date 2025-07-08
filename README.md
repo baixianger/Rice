@@ -15,6 +15,7 @@ This is a learning project
 4. tRPC with TanStack React Query in Next.js
   - [tRPC integration with Next.js](https://trpc.io/docs/client/nextjs)
   - [TanStack React Query](https://tanstack.com/query/v5/docs/overview)
+  - [Server Side prefetch](https://trpc.io/docs/client/tanstack-react-query/server-components#using-your-api)
 
 other dependencies include:
 
