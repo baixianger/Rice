@@ -16,6 +16,9 @@ This is a learning project
   - [tRPC integration with Next.js](https://trpc.io/docs/client/nextjs)
   - [TanStack React Query](https://tanstack.com/query/v5/docs/overview)
   - [Server Side prefetch](https://trpc.io/docs/client/tanstack-react-query/server-components#using-your-api)
+  - [How to expose tRPC to a standalone API](https://github.com/mcampa/trpc-to-openapi)
+5. Inngest, an event-driven durable execution platform
+  - [Next.js integration](https://www.inngest.com/docs/getting-started/nextjs-quick-start?ref=docs-home)
 
 other dependencies include:
 
