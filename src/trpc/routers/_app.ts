@@ -55,18 +55,55 @@ export const appRouter = createTRPCRouter({
   invoke: baseProcedure
     .input(
       z.object({
-        text: z.string(),
+        inputValue2tRPC: z.string(),
       })
     )
-    .mutation(async ({ input }) => {
-      await inngest.send({
-        name: "test/hello.world",
-        data: {
-          email: input.text,
-        },
-      });
-      return { ok: "success" };
-    }),
+    .mutation(
+      async (opts: {
+        ctx: { userId: string };
+        input: { inputValue2tRPC: string };
+      }) => {
+        console.log("tRPC 的 invoke procedure 接收到输入对象 : ", opts.input);
+        console.log("tRPC 的 invoke procedure 接收到上下文对象 : ", opts.ctx);
+        await inngest.send({
+          name: "test/hello.world",
+          data: {
+            inputValue2Inggest: opts.input.inputValue2tRPC,
+          },
+        });
+        return { ok: "success" };
+      }
+    ),
+
+  // add a inngest code agent
+  codeAgent: baseProcedure
+    .input(
+      z.object({
+        codePrompt: z.string(),
+      })
+    )
+    .mutation(
+      async (opts: {
+        ctx: { userId: string };
+        input: { codePrompt: string };
+      }) => {
+        console.log(
+          "tRPC 的 codeAgent procedure 接收到输入对象 : ",
+          opts.input
+        );
+        console.log(
+          "tRPC 的 codeAgent procedure 接收到上下文对象 : ",
+          opts.ctx
+        );
+        await inngest.send({
+          name: "test/code.function",
+          data: {
+            codePrompt: opts.input.codePrompt,
+          },
+        });
+        return { ok: "success" };
+      }
+    ),
 });
 
 // export type definition of API
