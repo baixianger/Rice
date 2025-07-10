@@ -1,28 +1,49 @@
 # Rice
+
 This is a learning project
 
 ## Tech Stack
 
-1. Next.js 
-  - [Getting Started](https://nextjs.org/docs/app/getting-started/installation)
+1. Next.js
+
+- [Getting Started](https://nextjs.org/docs/app/getting-started/installation)
+
 2. React with Shadcn UI and Tailwind CSS
-  - [Shadcn Installation](https://ui.shadcn.com/docs/installation/next)
-  - [Tailwind CSS min course](https://tailwindcss.com/build-uis-that-dont-suck)
-3. Prisma with Neon 
-  - [How to use Prisma ORM with Next.js](https://www.prisma.io/docs/guides/nextjs?utm_source=youtube&utm_medium=video&ref=codewithantonio&utm_campaign=course_vibe)
-  - [Neon Registration](https://neon.com/docs/introduction)
-  - Alternatively use [Supabase](https://supabase.com/)
+
+- [Shadcn Installation](https://ui.shadcn.com/docs/installation/next)
+- [Tailwind CSS min course](https://tailwindcss.com/build-uis-that-dont-suck)
+
+3. Prisma with Neon
+
+- [How to use Prisma ORM with Next.js](https://www.prisma.io/docs/guides/nextjs?utm_source=youtube&utm_medium=video&ref=codewithantonio&utm_campaign=course_vibe)
+- [Neon Registration](https://neon.com/docs/introduction)
+- Alternatively use [Supabase](https://supabase.com/)
+
 4. tRPC with TanStack React Query in Next.js
-  - [tRPC integration with Next.js](https://trpc.io/docs/client/nextjs)
-  - [TanStack React Query](https://tanstack.com/query/v5/docs/overview)
-  - [Server Side prefetch](https://trpc.io/docs/client/tanstack-react-query/server-components#using-your-api)
-  - [How to expose tRPC to a standalone API](https://github.com/mcampa/trpc-to-openapi)
+
+- [tRPC integration with Next.js](https://trpc.io/docs/client/nextjs)
+- [TanStack React Query](https://tanstack.com/query/v5/docs/overview)
+- [Server Side prefetch](https://trpc.io/docs/client/tanstack-react-query/server-components#using-your-api)
+- [How to expose tRPC to a standalone API](https://github.com/mcampa/trpc-to-openapi)
+
 5. Inngest, an event-driven durable execution platform
-  - [Next.js integration](https://www.inngest.com/docs/getting-started/nextjs-quick-start?ref=docs-home)
+
+- [Next.js integration](https://www.inngest.com/docs/getting-started/nextjs-quick-start?ref=docs-home)
+- [AgentKit](https://agentkit.inngest.com/overview)
+
+6. E2B sandbox
+
+- [E2B CLI](https://e2b.dev/docs/cli)
+- [E2B Next.js Template Dockerfile](https://github.com/AntonioErdeljac/vibe-assets/tree/main)
+
+  ```bash
+  e2b template build --name rice-nextjs-test-2 --cmd "/compile_page.sh"
+  ```
+
+- [E2B interpreter](https://e2b.dev/docs)
+- [E2B javascript SDK](https://e2b.dev/docs/sdk-reference/js-sdk/v1.7.1/sandbox#sandbox)
 
 other dependencies include:
-
-
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
