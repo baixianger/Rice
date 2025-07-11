@@ -1,7 +1,13 @@
 import { inngest } from "./client";
-import { getSandbox } from "./utils";
+import { getSandbox, lastAssistantTextMessageContent } from "./utils";
 import { Sandbox } from "@e2b/code-interpreter";
-import { createAgent, openai } from "@inngest/agent-kit";
+import { createAgent, createNetwork, openai } from "@inngest/agent-kit";
+import {
+  terminalTool,
+  createOrUpdateFilesTool,
+  readFilesTool,
+} from "./agent-tools";
+import { PROMPT } from "./prompt";
 
 // 这里定义 api/inngest/route.ts里需要注册的所有函数的实现
 export const helloWorld = inngest.createFunction(
@@ -23,12 +29,11 @@ export const helloWorld = inngest.createFunction(
   }
 );
 
+// code agent to write nextjs code
 export const codeFunction = inngest.createFunction(
   { id: "code-function" }, //这个id会显示在inngest的ui界面上
   { event: "test/code.function" },
   async ({ event, step }) => {
-    // Imaging this is a download step
-    console.log("Inngest 的 codeFunction 函数接收到输入对象 : ", event.data);
     const sandboxId = await step.run("get-sandbox-id", async () => {
       const sandbox = await Sandbox.create(
         "rice-nextjs-test-2" // template name
@@ -36,16 +41,44 @@ export const codeFunction = inngest.createFunction(
       return sandbox.sandboxId;
     });
 
-    // const codeAgent = createAgent({
-    //   name: "code-agent",
-    //   system:
-    //     "You are an expert Next.js developer. You write readable, maintainable code. You write simple Next.js and React code snippets.",
-    //   model: openai({ model: "gpt-4o-mini" }),
-    // });
+    const codeAgent = createAgent({
+      name: "code-agent",
+      description: "An expert coding agent",
+      system: PROMPT,
+      model: openai({
+        model: "gpt-4.1",
+        defaultParameters: {
+          temperature: 0.1,
+        },
+      }),
+      tools: [
+        terminalTool(sandboxId),
+        createOrUpdateFilesTool(sandboxId),
+        readFilesTool(sandboxId),
+      ],
+      lifecycle: {
+        onResponse: async ({ result, network }) => {
+          const lastAssistantMessageText =
+            lastAssistantTextMessageContent(result);
+          if (lastAssistantMessageText && network) {
+            network.state.data.output = lastAssistantMessageText;
+          }
+          return result;
+        },
+      },
+    });
 
-    // const { output } = await codeAgent.run(
-    //   `Write the following snippet: ${event.data.codePrompt}`
-    // );
+    const network = createNetwork({
+      name: "code-agent-network",
+      agents: [codeAgent],
+      maxIter: 15,
+      router: async ({ network }) => {
+        const summary = network.state.data.summary;
+        return summary ? undefined : codeAgent;
+      },
+    });
+
+    const result = await network.run(event.data.codePrompt);
 
     const sandboxUrl = await step.run("get-sandbox-url", async () => {
       const sandbox = await getSandbox(sandboxId);
@@ -53,6 +86,11 @@ export const codeFunction = inngest.createFunction(
       return `https://${host}`;
     });
 
-    return { output: "pesudo result from LLM", sandboxUrl };
+    return {
+      url: sandboxUrl,
+      title: "Fragment",
+      files: result.state.data.files,
+      summary: result.state.data.summary,
+    };
   }
 );
