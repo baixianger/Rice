@@ -56,8 +56,20 @@ This is a learning project
 
 - Create Message schema
 - Create Fragment schema
+  ```prisma
+  npx prisma migrate reset
+  npx prisma migrate dev --name init
+  ```
 - Save user input prompt as message
 - Save Agent response as message & fragment
+
+### 9. Projects
+
+- Create Project schema
+- Add Message relations
+- Create new project on user prompt
+- Preserve projectId in background jobs
+- Add project page use useRouter
 
 ### other dependencies include:
 
