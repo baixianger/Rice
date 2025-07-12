@@ -52,6 +52,13 @@ This is a learning project
 - Add a new prompt
 - Add agent network & routers
 
+### 8. Messages
+
+- Create Message schema
+- Create Fragment schema
+- Save user input prompt as message
+- Save Agent response as message & fragment
+
 ### other dependencies include:
 
 - CodeRabbit, a PR review Agent to help you review your code

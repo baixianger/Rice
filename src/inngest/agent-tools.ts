@@ -1,6 +1,7 @@
-import { createTool } from "@inngest/agent-kit";
+import { createTool, type Tool } from "@inngest/agent-kit";
 import { z } from "zod";
 import { getSandbox } from "./utils";
+import { AgentState } from "./interfaces";
 
 // 1. Give agent ability to run commands in the sandbox
 export const terminalTool = (sandboxId: string) =>
@@ -10,7 +11,7 @@ export const terminalTool = (sandboxId: string) =>
     parameters: z.object({
       command: z.string(),
     }),
-    handler: async ({ command }, { step }) => {
+    handler: async ({ command }, { step }: Tool.Options<AgentState>) => {
       const result = await step?.run("terminal", async () => {
         const buffers = { stdout: "", stderr: "" };
         try {
@@ -38,7 +39,7 @@ export const terminalTool = (sandboxId: string) =>
 export const createOrUpdateFilesTool = (sandboxId: string) =>
   createTool({
     name: "createOrUpdateFiles",
-    description: "Create or update files in the sandbox.",
+    description: "You can create or update files in the sandbox.",
     parameters: z.object({
       files: z.array(
         z.object({
@@ -47,7 +48,7 @@ export const createOrUpdateFilesTool = (sandboxId: string) =>
         })
       ),
     }),
-    handler: async ({ files }, { step, network }) => {
+    handler: async ({ files }, { step, network }: Tool.Options<AgentState>) => {
       const newFiles = await step?.run("createOrUpdateFiles", async () => {
         try {
           const updatedFiles = network.state.data.files || {};
@@ -72,18 +73,18 @@ export const createOrUpdateFilesTool = (sandboxId: string) =>
 export const readFilesTool = (sandboxId: string) =>
   createTool({
     name: "readFiles",
-    description: "Read files from the sandbox.",
+    description: "You can read files from the sandbox.",
     parameters: z.object({
       paths: z.array(z.string()),
     }),
-    handler: async ({ paths }, { step }) => {
+    handler: async ({ paths }, { step }: Tool.Options<AgentState>) => {
       const files = await step?.run("readFiles", async () => {
         try {
           const sandbox = await getSandbox(sandboxId);
-          const files = [];
+          const files: { [path: string]: string } = {};
           for (const path of paths) {
             const content = await sandbox.files.read(path);
-            files.push({ path, content });
+            files[path] = content;
           }
           return files;
         } catch (error) {
