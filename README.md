@@ -18,6 +18,12 @@ This is a learning project
 - [How to use Prisma ORM with Next.js](https://www.prisma.io/docs/guides/nextjs?utm_source=youtube&utm_medium=video&ref=codewithantonio&utm_campaign=course_vibe)
 - [Neon Registration](https://neon.com/docs/introduction)
 - Alternatively use [Supabase](https://supabase.com/)
+- Generate Prisma Client: `npx prisma generate`
+- Generate Prisma Migrations:
+  ```prisma
+  npx prisma migrate reset
+  npx prisma migrate dev --name init
+  ```
 
 ### 4. tRPC with TanStack React Query in Next.js
 
@@ -56,10 +62,6 @@ This is a learning project
 
 - Create Message schema
 - Create Fragment schema
-  ```prisma
-  npx prisma migrate reset
-  npx prisma migrate dev --name init
-  ```
 - Save user input prompt as message
 - Save Agent response as message & fragment
 
@@ -70,6 +72,14 @@ This is a learning project
 - Create new project on user prompt
 - Preserve projectId in background jobs
 - Add project page use useRouter
+
+### 10. Messages UI
+
+- Create Project View
+- Create Messages Container
+  - Create Message Card
+  - Create Message Form
+- Modify Messages `getMany` Procedure
 
 ### other dependencies include:
 
