@@ -22,10 +22,10 @@ const formSchema = z.object({
     .max(1000, "Content is too long"),
 });
 
-const MessageForm = ({ projectId }: MessageFormProps) => {
+const UserMessageForm = ({ projectId }: MessageFormProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const createMessage = useMutation(
+  const createUserMessage = useMutation(
     trpc.messages.createUserMessage.mutationOptions({
       onSuccess: () => {
         form.reset();
@@ -51,7 +51,7 @@ const MessageForm = ({ projectId }: MessageFormProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await createMessage.mutateAsync({
+    await createUserMessage.mutateAsync({
       userInput: values.userInput,
       projectId,
     });
@@ -59,7 +59,7 @@ const MessageForm = ({ projectId }: MessageFormProps) => {
 
   const [isFocused, setIsFocused] = useState(false);
   const showUsage = false;
-  const isPending = createMessage.isPending;
+  const isPending = createUserMessage.isPending;
   const isButtonDisabled = isPending || !form.formState.isValid;
 
   return (
@@ -129,4 +129,4 @@ const MessageForm = ({ projectId }: MessageFormProps) => {
   );
 };
 
-export { MessageForm };
+export { UserMessageForm };

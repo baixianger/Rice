@@ -28,9 +28,11 @@ enum MessageRole {
 }
 
 enum MessageType {
+  INPUT
   RESULT
   ERROR
 }
+
 model Message {
   id        String @id @default(uuid())
   content   String
