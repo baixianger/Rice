@@ -81,6 +81,12 @@ This is a learning project
   - Create Message Form
 - Modify Messages `getMany` Procedure
 
+### 11. Project Header
+
+- Create Project Header
+- Add Fragment selection
+- Add Loading state
+
 ### other dependencies include:
 
 - CodeRabbit, a PR review Agent to help you review your code

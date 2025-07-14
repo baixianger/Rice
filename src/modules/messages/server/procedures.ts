@@ -2,18 +2,23 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { z } from "zod";
 import prisma from "@/lib/db";
 import { inngest } from "@/inngest/client";
-import { Message, Prisma } from "@/generated/prisma/client";
+import {
+  Message,
+  Prisma,
+  MessageType,
+  MessageRole,
+} from "@/generated/prisma/client";
 
-type GetManyMessagesInput = {
+type GetManyMessagesInputProps = {
   projectId: string;
 };
 
-type CreateMessageInput = {
+type CreateUserMessageInputProps = {
   userInput: string;
   projectId: string;
 };
 
-type MessageWithFragment = Prisma.MessageGetPayload<{
+type MessageWithFragmentProps = Prisma.MessageGetPayload<{
   include: { fragment: true };
 }>;
 
@@ -26,8 +31,8 @@ export const messagesRouter = createTRPCRouter({
     )
     .query(
       async (opts: {
-        input: GetManyMessagesInput;
-      }): Promise<MessageWithFragment[]> => {
+        input: GetManyMessagesInputProps;
+      }): Promise<MessageWithFragmentProps[]> => {
         return await prisma.message.findMany({
           where: {
             projectId: opts.input.projectId,
@@ -51,22 +56,27 @@ export const messagesRouter = createTRPCRouter({
         projectId: z.string().min(1, "Project ID is required."),
       })
     )
-    .mutation(async (opts: { input: CreateMessageInput }): Promise<Message> => {
-      const createdMessage = await prisma.message.create({
-        data: {
-          projectId: opts.input.projectId,
-          content: opts.input.userInput,
-          role: "USER",
-          type: "RESULT",
-        },
-      });
-      await inngest.send({
-        name: "code-agent/run",
-        data: {
-          userInput: opts.input.userInput,
-          projectId: opts.input.projectId,
-        },
-      });
-      return createdMessage;
-    }),
+    .mutation(
+      async (opts: {
+        input: CreateUserMessageInputProps;
+      }): Promise<Omit<Message, "fragment">> => {
+        console.log("测试用户输入：", opts.input.userInput);
+        const createdUserMessage = await prisma.message.create({
+          data: {
+            projectId: opts.input.projectId,
+            content: opts.input.userInput,
+            role: MessageRole.USER,
+            type: MessageType.INPUT,
+          },
+        });
+        await inngest.send({
+          name: "code-agent/run",
+          data: {
+            userInput: opts.input.userInput,
+            projectId: opts.input.projectId,
+          },
+        });
+        return createdUserMessage;
+      }
+    ),
 });

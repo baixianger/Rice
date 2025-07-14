@@ -66,12 +66,12 @@ const AssistantMessage = ({
     <div
       className={cn(
         "flex flex-col group px-2 pb-4",
-        type === "ERROR" && "text-red-700 dark:text-red-500"
+        type === "ERROR" && "text-red-700 dark:text-red-400"
       )}
     >
       <div className="flex items-center gap-2 pl-2 mb-2">
         <Avatar className="rounded-lg">
-          <AvatarImage src="/logo.png" />
+          <AvatarImage src="/bowl.png" />
           <AvatarFallback>Rice</AvatarFallback>
         </Avatar>
         <span className="text-sm font-medium">Rice</span>
@@ -100,9 +100,12 @@ const FragmentCard = ({
 }: FragmentCardProps) => {
   return (
     <Button
-      variant="ghost"
-      disabled={isActivateFragment}
-      className="flex items-start border bg-muted w-fit h-fit rounded-lg"
+      variant="outline"
+      className={cn(
+        "flex items-start border bg-muted w-fit h-fit rounded-lg opacity-50",
+        isActivateFragment &&
+          "animate-pulse border-purple-900 text-purple-900 opacity-100 pointer-events-none border-2"
+      )}
       onClick={() => onFragmentClick(fragment)}
     >
       <LucideCode2 className="w-4 h-4 mt-0.5" />

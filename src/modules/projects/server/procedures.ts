@@ -4,7 +4,7 @@ import prisma from "@/lib/db";
 import { inngest } from "@/inngest/client";
 import { generateSlug } from "random-word-slugs";
 import { TRPCError } from "@trpc/server";
-import { Project } from "@/generated/prisma/client";
+import { Project, MessageType, MessageRole } from "@/generated/prisma/client";
 
 type GetOneProjectInput = {
   id: string;
@@ -60,8 +60,8 @@ export const projectsRouter = createTRPCRouter({
           messages: {
             create: {
               content: opts.input.userInput,
-              role: "USER",
-              type: "RESULT",
+              role: MessageRole.USER,
+              type: MessageType.INPUT,
             },
           },
         },

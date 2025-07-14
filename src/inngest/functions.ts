@@ -10,8 +10,9 @@ import {
 import { PROMPT } from "./prompt";
 import prisma from "@/lib/db";
 import { AgentState } from "./interfaces";
+import { MessageType, MessageRole } from "@/generated/prisma/client";
 
-const MAX_ITERATIONS = 3;
+const MAX_ITERATIONS = 2;
 // code agent to write nextjs code
 export const codeAgentFunction = inngest.createFunction(
   { id: "code-agent" }, //这个id会显示在inngest的ui界面上
@@ -64,7 +65,7 @@ export const codeAgentFunction = inngest.createFunction(
     const result = await network.run(event.data.userInput);
 
     const isError =
-      !result.state.data.summary && result.state.data.files === undefined;
+      !result.state.data.summary || result.state.data.files === undefined;
 
     const sandboxUrl = await step.run("get-sandbox-url", async () => {
       const sandbox = await getSandbox(sandboxId);
@@ -77,8 +78,8 @@ export const codeAgentFunction = inngest.createFunction(
         return await prisma.message.create({
           data: {
             content: "Something went wrong, please try again.",
-            role: "ASSISTANT",
-            type: "ERROR",
+            role: MessageRole.ASSISTANT,
+            type: MessageType.ERROR,
             projectId: event.data.projectId,
           },
         });
@@ -87,8 +88,8 @@ export const codeAgentFunction = inngest.createFunction(
         data: {
           // 超过最大迭代次数，没有summary 返回undefined会报错
           content: result.state.data.summary,
-          role: "ASSISTANT",
-          type: "RESULT",
+          role: MessageRole.ASSISTANT,
+          type: MessageType.RESULT,
           projectId: event.data.projectId,
           fragment: {
             create: {
