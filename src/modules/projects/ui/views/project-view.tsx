@@ -9,11 +9,12 @@ import { Suspense } from "react";
 import { useState } from "react";
 import { Fragment } from "@/generated/prisma";
 import { ProjectHeader } from "@/modules/projects/ui/components/project-header";
+import { FragmentWeb } from "@/modules/projects/ui/components/fragment-web";
 
-type Props = {
+type ProjectViewProps = {
   projectId: string;
 };
-const ProjectView = ({ projectId }: Props) => {
+const ProjectView = ({ projectId }: ProjectViewProps) => {
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
 
   return (
@@ -37,7 +38,7 @@ const ProjectView = ({ projectId }: Props) => {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={65} minSize={50}>
-          TODO: Preview
+          {!!activeFragment && <FragmentWeb data={activeFragment} />}
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
