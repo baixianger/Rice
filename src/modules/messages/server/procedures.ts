@@ -2,19 +2,46 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { z } from "zod";
 import prisma from "@/lib/db";
 import { inngest } from "@/inngest/client";
+import { Message, Prisma } from "@/generated/prisma/client";
+
+type GetManyMessagesInput = {
+  projectId: string;
+};
+
+type CreateMessageInput = {
+  userInput: string;
+  projectId: string;
+};
+
+type MessageWithFragment = Prisma.MessageGetPayload<{
+  include: { fragment: true };
+}>;
 
 export const messagesRouter = createTRPCRouter({
-  getMany: baseProcedure.query(async () => {
-    return await prisma.message.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-      // include: {
-      //   fragment: true,
-      // },
-    });
-  }),
-  create: baseProcedure
+  getManyMessages: baseProcedure
+    .input(
+      z.object({
+        projectId: z.string().min(1, "Project ID is required."),
+      })
+    )
+    .query(
+      async (opts: {
+        input: GetManyMessagesInput;
+      }): Promise<MessageWithFragment[]> => {
+        return await prisma.message.findMany({
+          where: {
+            projectId: opts.input.projectId,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+          include: {
+            fragment: true,
+          },
+        });
+      }
+    ),
+  createUserMessage: baseProcedure
     .input(
       z.object({
         userInput: z
@@ -24,7 +51,7 @@ export const messagesRouter = createTRPCRouter({
         projectId: z.string().min(1, "Project ID is required."),
       })
     )
-    .mutation(async (opts) => {
+    .mutation(async (opts: { input: CreateMessageInput }): Promise<Message> => {
       const createdMessage = await prisma.message.create({
         data: {
           projectId: opts.input.projectId,

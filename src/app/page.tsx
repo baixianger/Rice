@@ -13,7 +13,7 @@ const Page = () => {
   const [userInput, setUserInput] = useState("");
   const trpc = useTRPC();
   const createProject = useMutation(
-    trpc.projects.create.mutationOptions({
+    trpc.projects.createProject.mutationOptions({
       onSuccess: (data) => {
         toast.success("Project created successfully");
         router.push(`/projects/${data.id}`);
