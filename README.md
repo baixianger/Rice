@@ -91,6 +91,14 @@ This is a learning project
 
 - Create Fragment View
 
+### 13. Code View
+
+- Create Tabs in Project View
+- Create File Explorer
+  - Create File Explorer
+  - Create Tree View
+  - Create File path Breadcrumbs
+
 ### other dependencies include:
 
 - CodeRabbit, a PR review Agent to help you review your code
