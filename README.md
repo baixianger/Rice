@@ -87,6 +87,10 @@ This is a learning project
 - Add Fragment selection
 - Add Loading state
 
+### 12. Fragment View
+
+- Create Fragment View
+
 ### other dependencies include:
 
 - CodeRabbit, a PR review Agent to help you review your code
