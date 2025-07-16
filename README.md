@@ -110,6 +110,18 @@ This is a learning project
 
   - Pick and apply new theme
 
+- 16. Authentication
+  - Create a Clerk account
+  - Setup Clerk
+    - Update .env
+    - Add ClerkProvider
+    - Add Sign in and Sign up screns
+    - Add middleware
+  - Create home layout Navbar
+  - Create User Control component
+  - Create protected tRPC procedures
+  - Update Prisma Schema
+
 ### other dependencies include:
 
 - CodeRabbit, a PR review Agent to help you review your code
