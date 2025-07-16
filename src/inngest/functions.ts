@@ -12,7 +12,7 @@ import prisma from "@/lib/db";
 import { AgentState } from "./interfaces";
 import { MessageType, MessageRole } from "@/generated/prisma/client";
 
-const MAX_ITERATIONS = 2;
+const MAX_ITERATIONS = 3;
 // code agent to write nextjs code
 export const codeAgentFunction = inngest.createFunction(
   { id: "code-agent" }, //这个id会显示在inngest的ui界面上

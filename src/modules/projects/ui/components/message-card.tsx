@@ -34,8 +34,8 @@ type FragmentCardProps = {
 
 const UserMessage = ({ content, createdAt }: UserMessageProps) => {
   return (
-    <div className="flex flex-col group items-end pb-4 pr-2">
-      <div className="flex items-center gap-2 pr-2 mb-2">
+    <div className="flex flex-col group items-end pb-4 px-2">
+      <div className="flex items-center gap-2 mb-2">
         <span className="text-xs text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100">
           {format(createdAt, "HH:mm 'on' MMM dd, yyyy")}
         </span>
@@ -45,7 +45,7 @@ const UserMessage = ({ content, createdAt }: UserMessageProps) => {
           <AvatarFallback>User</AvatarFallback>
         </Avatar>
       </div>
-      <div className="flex">
+      <div className="flex pl-2">
         <Card className="rounded-lg bg-muted px-4 py-2 shadow-none max-w-[100%] break-words">
           {content}
         </Card>
@@ -104,7 +104,7 @@ const FragmentCard = ({
       className={cn(
         "flex items-start border bg-muted w-fit h-fit rounded-lg opacity-50",
         isActivateFragment &&
-          "animate-pulse border-purple-900 text-purple-900 opacity-100 pointer-events-none border-2"
+          "animate-pulse border-purple-900 text-purple-900 dark:text-purple-300 opacity-100 pointer-events-none border-2"
       )}
       onClick={() => onFragmentClick(fragment)}
     >
