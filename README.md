@@ -95,9 +95,20 @@ This is a learning project
 
 - Create Tabs in Project View
 - Create File Explorer
+
   - Create File Explorer
   - Create Tree View
   - Create File path Breadcrumbs
+
+- 14. Home Page
+
+  - Create Home Page
+  - Create Projects List
+  - Create Project Form
+
+- 15. Theme
+
+  - Pick and apply new theme
 
 ### other dependencies include:
 
