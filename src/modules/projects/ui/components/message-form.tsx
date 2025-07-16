@@ -38,7 +38,7 @@ const UserMessageForm = ({ projectId }: MessageFormProps) => {
       },
       onError: (error) => {
         toast.error(error.message);
-        // TODO: Redirect to procing page if specific error
+        // TODO: Redirect to pricing page if specific error
       },
     })
   );

@@ -19,28 +19,30 @@ const MessagesContainer = ({
 }: MessagesContainerProps) => {
   const trpc = useTRPC();
   const bottomRef = useRef<HTMLDivElement>(null);
+  const lastAssistantMessageIdRef = useRef<string | null>(null);
   const { data: messages } = useSuspenseQuery(
     trpc.messages.getManyMessages.queryOptions(
       {
         projectId,
       },
       {
-        // TODO: temporary live message update
         refetchInterval: 5000,
       }
     )
   );
 
-  // TODO: This will be caused automatically activate the last assistant message
-  //       every the refetchInterval (5000 ms) happens
-  // useEffect(() => {
-  //   const lastAssistantMessage = messages?.findLast(
-  //     (message) => message.role === "ASSISTANT" && message.fragment !== null
-  //   );
-  //   if (lastAssistantMessage) {
-  //     setActiveFragment(lastAssistantMessage.fragment);
-  //   }
-  // }, [messages, setActiveFragment]);
+  useEffect(() => {
+    const lastAssistantMessage = messages?.findLast(
+      (message) => message.role === "ASSISTANT" && message.fragment !== null
+    );
+    if (
+      lastAssistantMessage?.fragment &&
+      lastAssistantMessage.id !== lastAssistantMessageIdRef.current
+    ) {
+      setActiveFragment(lastAssistantMessage.fragment);
+      lastAssistantMessageIdRef.current = lastAssistantMessage.id;
+    }
+  }, [messages, setActiveFragment]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
