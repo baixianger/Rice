@@ -1,4 +1,4 @@
-import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+import { protectedProcedure, createTRPCRouter } from "@/trpc/init";
 import { z } from "zod";
 import prisma from "@/lib/db";
 import { inngest } from "@/inngest/client";
@@ -6,24 +6,17 @@ import { generateSlug } from "random-word-slugs";
 import { TRPCError } from "@trpc/server";
 import { Project, MessageType, MessageRole } from "@/generated/prisma/client";
 
-type GetOneProjectInput = {
-  id: string;
-};
-
-type CreateProjectInput = {
-  userInput: string;
-};
-
 export const projectsRouter = createTRPCRouter({
-  getOneProject: baseProcedure
+  getOneProject: protectedProcedure
     .input(
       z.object({
         id: z.string().min(1, "Project ID is required."),
       })
     )
-    .query(async (opts: { input: GetOneProjectInput }): Promise<Project> => {
+    .query(async (opts): Promise<Project> => {
       const existingProject = await prisma.project.findUnique({
         where: {
+          userId: opts.ctx.auth.userId,
           id: opts.input.id,
         },
       });
@@ -35,14 +28,19 @@ export const projectsRouter = createTRPCRouter({
       }
       return existingProject;
     }),
-  getManyProjects: baseProcedure.query(async (): Promise<Project[]> => {
-    return await prisma.project.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }),
-  createProject: baseProcedure
+  getManyProjects: protectedProcedure.query(
+    async (opts): Promise<Project[]> => {
+      return await prisma.project.findMany({
+        where: {
+          userId: opts.ctx.auth.userId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }
+  ),
+  createProject: protectedProcedure
     .input(
       z.object({
         userInput: z
@@ -51,9 +49,10 @@ export const projectsRouter = createTRPCRouter({
           .max(1000, "Prompt is too long."),
       })
     )
-    .mutation(async (opts: { input: CreateProjectInput }): Promise<Project> => {
+    .mutation(async (opts): Promise<Project> => {
       const createdProject = await prisma.project.create({
         data: {
+          userId: opts.ctx.auth.userId,
           name: generateSlug(2, {
             format: "kebab",
           }),
