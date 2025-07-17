@@ -111,6 +111,7 @@ This is a learning project
   - Pick and apply new theme
 
 - 16. Authentication
+
   - Create a Clerk account
   - Setup Clerk
     - Update .env
@@ -121,6 +122,16 @@ This is a learning project
   - Create User Control component
   - Create protected tRPC procedures
   - Update Prisma Schema
+
+- 17. Billing
+  - Enable Clerk billing [ref](https://clerk.com/docs/nextjs/billing/b2c-saas)
+  - Create billing page
+  - Add Rate Limiting [node-rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible/wiki/Prisma)
+    - Update prisma schema
+    - Create usage utils, i.e. getUsageTracker, consumeCredits, refundCredits
+  - Create Usage Component
+  - Update tRPC procedures to get usage status
+  - Improve the usage design by using a tRPC middleware to check credits before each procedure
 
 ### other dependencies include:
 

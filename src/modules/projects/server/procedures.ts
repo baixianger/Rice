@@ -5,6 +5,7 @@ import { inngest } from "@/inngest/client";
 import { generateSlug } from "random-word-slugs";
 import { TRPCError } from "@trpc/server";
 import { Project, MessageType, MessageRole } from "@/generated/prisma/client";
+import { consumeCredits } from "@/lib/usage";
 
 export const projectsRouter = createTRPCRouter({
   getOneProject: protectedProcedure
@@ -50,6 +51,21 @@ export const projectsRouter = createTRPCRouter({
       })
     )
     .mutation(async (opts): Promise<Project> => {
+      try {
+        await consumeCredits();
+      } catch (error) {
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: `没有usage信息 ${error.message}`,
+          });
+        } else {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: "You have run out of credits.",
+          });
+        }
+      }
       const createdProject = await prisma.project.create({
         data: {
           userId: opts.ctx.auth.userId,

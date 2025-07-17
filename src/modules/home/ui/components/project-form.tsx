@@ -26,22 +26,26 @@ const ProjectForm = () => {
   const trpc = useTRPC();
   const clerk = useClerk();
   const queryClient = useQueryClient();
+  // createProject在调用tRPC的时候内部会有middleware验证用户信息，如果用户未登录会自动跳转到Clerk登录页面
   const createProject = useMutation(
     trpc.projects.createProject.mutationOptions({
       onSuccess: (data) => {
         queryClient.invalidateQueries({
           queryKey: trpc.projects.getManyProjects.queryKey(),
         }); // 让缓存失效
+        queryClient.invalidateQueries({
+          queryKey: trpc.usage.getUsageStatus.queryKey(),
+        });
         router.push(`/projects/${data.id}`);
-        // TODO: Invalidate usage status
       },
       onError: (error) => {
+        toast.error(error.message);
         if (error.data?.code === "UNAUTHORIZED") {
-          // router.push("/sign-in");
           clerk.openSignIn();
         }
-        toast.error(error.message);
-        // TODO: Redirect to pricing page if specific error
+        if (error.data?.code === "TOO_MANY_REQUESTS") {
+          router.push("/pricing");
+        }
       },
     })
   );
