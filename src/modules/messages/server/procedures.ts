@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { inngest } from "@/inngest/client";
 import { MessageType, MessageRole, Prisma } from "@/generated/prisma/client";
 import { TRPCError } from "@trpc/server";
+import { consumeCredits } from "@/lib/usage";
 
 export const messagesRouter = createTRPCRouter({
   getManyMessages: protectedProcedure
@@ -40,6 +41,21 @@ export const messagesRouter = createTRPCRouter({
     )
     .mutation(async (opts) => {
       try {
+        await consumeCredits();
+      } catch (error) {
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: `没有usage信息 ${error.message}`,
+          });
+        } else {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: "You have run out of credits.",
+          });
+        }
+      }
+      try {
         const createdUserMessage = await prisma.message.create({
           data: {
             content: opts.input.userInput,
@@ -58,6 +74,7 @@ export const messagesRouter = createTRPCRouter({
           data: {
             userInput: opts.input.userInput,
             projectId: opts.input.projectId,
+            userId: opts.ctx.auth.userId,
           },
         });
         return createdUserMessage;

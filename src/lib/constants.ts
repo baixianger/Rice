@@ -1,3 +1,10 @@
+export const MAX_ITERATIONS = 3;
+
+export const FREE_POINTS = 2;
+export const PRO_POINTS = 50;
+export const DURATION = 60 * 60 * 24 * 30; // 30 days
+export const GENERATION_COST = 1;
+
 export const PROJECT_TEMPLATES = [
   {
     emoji: "🎬",

@@ -5,11 +5,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { LucideArrowUp, LucideLoaderCircle } from "lucide-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
+import { Usage } from "@/components/usage";
+import { useRouter } from "next/navigation";
 
 type MessageFormProps = {
   projectId: string;
@@ -25,6 +27,9 @@ const formSchema = z.object({
 const UserMessageForm = ({ projectId }: MessageFormProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const { data: usage } = useQuery(trpc.usage.getUsageStatus.queryOptions());
+
   const createUserMessage = useMutation(
     trpc.messages.createUserMessage.mutationOptions({
       onSuccess: () => {
@@ -34,11 +39,17 @@ const UserMessageForm = ({ projectId }: MessageFormProps) => {
             projectId,
           }),
         });
-        // TODO: Invalidate usage status
+        // Invalidate usage status
+        queryClient.invalidateQueries({
+          queryKey: trpc.usage.getUsageStatus.queryKey(),
+        });
       },
       onError: (error) => {
         toast.error(error.message);
-        // TODO: Redirect to pricing page if specific error
+        if (error.data?.code === "TOO_MANY_REQUESTS") {
+          // TODO: add assistant message to the chatbox to show the use have to upgrade with the pricing link
+          router.push("/pricing");
+        }
       },
     })
   );
@@ -58,18 +69,24 @@ const UserMessageForm = ({ projectId }: MessageFormProps) => {
   };
 
   const [isFocused, setIsFocused] = useState(false);
-  const showUsage = false;
+  const showUsage = !!usage;
   const isPending = createUserMessage.isPending;
   const isButtonDisabled = isPending || !form.formState.isValid;
 
   return (
     <Form {...form}>
+      {showUsage && (
+        <Usage
+          points={usage.remainingPoints}
+          msBeforeNext={usage.msBeforeNext}
+        />
+      )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(
           "relative border px-3 pt-3 pb-2 rounded-xl bg-sidebar dark:bg-sidebar transition-all",
           isFocused && "shadow-xm",
-          showUsage && "border-t-none"
+          showUsage && "border-t-none rounded-t-none"
         )}
       >
         <FormField
