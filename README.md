@@ -153,6 +153,7 @@ This is a learning project
 - 20. Deployment
   - Local deployment test `npm run build && npm run start`
   - Deploy to Vercel
+  - Bypassing deployment protection [ref](https://www.inngest.com/docs/deploy/vercel#bypassing-deployment-protection)
 
 ### other dependencies include:
 
