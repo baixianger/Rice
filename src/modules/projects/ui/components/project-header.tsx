@@ -64,7 +64,7 @@ const ProjectHeader = ({ projectId }: ProjectHeaderProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent side="bottom" align="start">
           <DropdownMenuItem asChild>
-            <Link href="/projects">
+            <Link href="/">
               <LucideChevronLeft />
               <span>Go to Dashboard</span>
             </Link>

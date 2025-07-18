@@ -124,6 +124,7 @@ This is a learning project
   - Update Prisma Schema
 
 - 17. Billing
+
   - Enable Clerk billing [ref](https://clerk.com/docs/nextjs/billing/b2c-saas)
   - Create billing page
   - Add Rate Limiting [node-rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible/wiki/Prisma)
@@ -132,6 +133,8 @@ This is a learning project
   - Create Usage Component
   - Update tRPC procedures to get usage status
   - Improve the usage design by using a tRPC middleware to check credits before each procedure
+
+- 18. Memory
 
 ### other dependencies include:
 
