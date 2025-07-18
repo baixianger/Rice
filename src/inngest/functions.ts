@@ -21,7 +21,7 @@ import { FRAGMENT_TITLE_PROMPT, RESPONSE_PROMPT, PROMPT } from "./prompt";
 import prisma from "@/lib/db";
 import { AgentState } from "./interfaces";
 import { MessageType, MessageRole } from "@/generated/prisma/client";
-import { MAX_ITERATIONS } from "@/lib/constants";
+import { MAX_ITERATIONS, SANDBOX_TIMEOUT } from "@/lib/constants";
 
 // 1. 定义事件类型
 import { EventPayload } from "inngest";
@@ -62,6 +62,8 @@ const agentWorkflow: InngestHandler<CodeAgentRunEvent> = async ({
     const sandbox = await Sandbox.create(
       "rice-nextjs-test-2" // template name
     );
+    // set sandbox expiration to 10 minutes
+    sandbox.setTimeout(SANDBOX_TIMEOUT);
     return sandbox.sandboxId;
   });
 
@@ -74,6 +76,7 @@ const agentWorkflow: InngestHandler<CodeAgentRunEvent> = async ({
       orderBy: {
         createdAt: "asc", // 保证消息的顺序, 否则模型会出现幻觉
       },
+      take: -5,
     });
     for (const message of messages) {
       formattedMessages.push({

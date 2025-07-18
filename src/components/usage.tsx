@@ -3,6 +3,7 @@ import { LucideCrown } from "lucide-react";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { Button } from "./ui/button";
 import { useAuth } from "@clerk/nextjs";
+import { useMemo } from "react";
 
 type UsageProps = {
   points: number;
@@ -12,11 +13,21 @@ type UsageProps = {
 export function Usage({ points, msBeforeNext }: UsageProps) {
   const { has } = useAuth();
   const hasProAccess = has?.({ plan: "pro_user" });
+  const resetTime = useMemo(() => {
+    try {
+      const duration = intervalToDuration({
+        start: new Date(),
+        end: new Date(Date.now() + msBeforeNext),
+      });
+      return formatDuration(duration, {
+        format: ["months", "days", "hours"],
+      });
+    } catch (error) {
+      console.error("Error formatting duration ", error);
+      return "N/A";
+    }
+  }, [msBeforeNext]);
 
-  const duration = intervalToDuration({
-    start: new Date(),
-    end: new Date(Date.now() + msBeforeNext),
-  });
   return (
     <div className="rounded-t-xl bg-background border border-b-0 p-2.5">
       <div className="flex items-center gap-x-2">
@@ -24,12 +35,7 @@ export function Usage({ points, msBeforeNext }: UsageProps) {
           <p className="text-sm">
             {points} {hasProAccess ? "" : "free"} credits remaining
           </p>
-          <p className="text-xs text-muted-foreground">
-            Resets in{" "}
-            {formatDuration(duration, {
-              format: ["months", "days", "hours"],
-            })}
-          </p>
+          <p className="text-xs text-muted-foreground">Resets in {resetTime}</p>
         </div>
         {!hasProAccess ? (
           <Button asChild size="sm" variant="tertiary" className="ml-auto">
@@ -38,7 +44,7 @@ export function Usage({ points, msBeforeNext }: UsageProps) {
             </Link>
           </Button>
         ) : (
-          <span className="ml-auto border rounded-sm border-shade px-1 text-xs text-transparen">
+          <span className="ml-auto border rounded-sm border-shade px-1 text-xs text-transparent">
             Pro
             <span className="align-super text-[0.6rem] pl-[1px] text-amber-500">
               +

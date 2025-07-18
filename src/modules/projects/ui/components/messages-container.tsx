@@ -5,6 +5,7 @@ import { UserMessageForm } from "./message-form";
 import { useRef, useEffect } from "react";
 import { Fragment } from "@/generated/prisma";
 import { MessageLoading } from "./message-loading";
+import { MESSAGES_POLLING_INTERVAL } from "@/lib/constants";
 
 type MessagesContainerProps = {
   projectId: string;
@@ -26,7 +27,7 @@ const MessagesContainer = ({
         projectId,
       },
       {
-        refetchInterval: 5000,
+        refetchInterval: MESSAGES_POLLING_INTERVAL,
       }
     )
   );

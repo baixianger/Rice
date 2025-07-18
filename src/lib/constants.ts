@@ -1,5 +1,9 @@
 export const MAX_ITERATIONS = 3;
 
+export const MESSAGES_POLLING_INTERVAL = 5000;
+
+export const SANDBOX_TIMEOUT = 60_000; // 1 minute for sandbox timeout
+
 export const FREE_POINTS = 2;
 export const PRO_POINTS = 50;
 export const DURATION = 60 * 60 * 24 * 30; // 30 days
