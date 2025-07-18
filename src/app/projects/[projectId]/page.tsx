@@ -4,9 +4,7 @@ import { ProjectView } from "@/modules/projects/ui/views/project-view";
 import { Suspense } from "react";
 
 type Props = {
-  params: {
-    projectId: string;
-  };
+  params: Promise<{ projectId: string }>;
 };
 
 const Page = async ({ params }: Props) => {

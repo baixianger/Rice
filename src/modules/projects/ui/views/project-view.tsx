@@ -73,7 +73,7 @@ const ProjectView = ({ projectId }: ProjectViewProps) => {
                     </Link>
                   </Button>
                 ) : (
-                  <span className="ml-auto border rounded-sm border-shade px-1 text-ms text-transparent">
+                  <span className="ml-auto border rounded-sm border-shade px-1 text-sm text-transparent">
                     Pro
                     <span className="align-super text-xs pl-[1px] text-amber-500">
                       +

@@ -9,7 +9,8 @@
     "lint": "next lint",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "ingest:dev": "inngest-cli dev"
+    "ingest:dev": "inngest-cli dev",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.25.2",

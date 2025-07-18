@@ -138,7 +138,7 @@ This is a learning project
 
   - Add previous messages context
   - Add fragment title generation
-  - Add response messsage generation
+  - Add response message generation
 
 - 19. Bug Fixes
 
@@ -150,7 +150,9 @@ This is a learning project
   - Improve Error handling [react-error-boundary (fine-grained error handling)](https://github.com/bvaughn/react-error-boundary) or [nextjs error handling (global error handling)](https://nextjs.org/docs/app/getting-started/error-handling)
   - Realtime Message Fetching in stead of polling [Inngest Realtime](https://www.inngest.com/docs/features/realtime/react-hooks)
 
-- 20.
+- 20. Deployment
+  - Local deployment test `npm run build && npm run start`
+  - Deploy to Vercel
 
 ### other dependencies include:
 
