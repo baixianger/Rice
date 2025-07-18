@@ -73,17 +73,12 @@ const ProjectView = ({ projectId }: ProjectViewProps) => {
                     </Link>
                   </Button>
                 ) : (
-                  <Button
-                    disabled
-                    size="sm"
-                    variant="outline"
-                    className="pb-1 px-1 m-0 bg-primary"
-                  >
-                    <span className="text-primary-foreground">
-                      Pro
-                      <span className="align-super text-xs pl-[1px]">+</span>
+                  <span className="ml-auto border rounded-sm border-shade px-1 text-ms text-transparent">
+                    Pro
+                    <span className="align-super text-xs pl-[1px] text-amber-500">
+                      +
                     </span>
-                  </Button>
+                  </span>
                 )}
                 <UserControl />
               </div>

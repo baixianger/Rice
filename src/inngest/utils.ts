@@ -1,8 +1,11 @@
 import { Sandbox } from "@e2b/code-interpreter";
 import { AgentResult, TextMessage, type Message } from "@inngest/agent-kit";
+import { SANDBOX_TIMEOUT } from "@/lib/constants";
 
 export async function getSandbox(sandboxId: string) {
-  return await Sandbox.connect(sandboxId);
+  const sandbox = await Sandbox.connect(sandboxId);
+  sandbox.setTimeout(SANDBOX_TIMEOUT);
+  return sandbox;
 }
 
 /* 这里有一个AgentKit的一个输出示例,result.output数组

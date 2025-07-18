@@ -134,7 +134,23 @@ This is a learning project
   - Update tRPC procedures to get usage status
   - Improve the usage design by using a tRPC middleware to check credits before each procedure
 
-- 18. Memory
+- 18. Agent Memory
+
+  - Add previous messages context
+  - Add fragment title generation
+  - Add response messsage generation
+
+- 19. Bug Fixes
+
+  - Increase Sandbox expiration [E2B live time](https://e2b.dev/docs/sandbox)
+  - Make E2B Template private
+    | Went to `sandbox_templates/nextjs` folder where `e2b.toml` is located
+    | Run command `e2b template publish/unpublish`
+  - Improve Conversation history [use `take` parameters in prisma query](https://www.prisma.io/docs/orm/prisma-client/queries/pagination#sorting-and-cursor-based-pagination)
+  - Improve Error handling [react-error-boundary (fine-grained error handling)](https://github.com/bvaughn/react-error-boundary) or [nextjs error handling (global error handling)](https://nextjs.org/docs/app/getting-started/error-handling)
+  - Realtime Message Fetching in stead of polling [Inngest Realtime](https://www.inngest.com/docs/features/realtime/react-hooks)
+
+- 20.
 
 ### other dependencies include:
 
